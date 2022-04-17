@@ -51,14 +51,21 @@ import (
 // }
 
 func main() {
-	c1 := make(chan int, 5)
-	go func() {
-		for i := 0; i < 10; i++ {
-			c1 <- i
-		}
-	}()
+	c1 := make(chan int, 1)
+	c2 := make(chan int, 1)
+	c3 := make(chan int, 1)
 
-	for i := 0; i < 10; i++ {
-		fmt.Println(<-c1)
+	c1 <- 1
+	c2 <- 2
+	c3 <- 3
+	select {
+	case <-c1:
+		fmt.Println(1)
+	case <-c2:
+		fmt.Println(2)
+	case <-c3:
+		fmt.Println(3)
+	default:
+		fmt.Println("没有东西")
 	}
 }
